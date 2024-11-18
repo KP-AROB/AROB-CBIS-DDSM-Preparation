@@ -39,7 +39,12 @@ We implemented different ways to prepare the dataset depending on the targetted 
 - ```lesion-severity```: This task separates both calc and mass datasets into "benign" and "malignant" classes leading to 4 different classes.
 - ```roi-severity```: This task separates both calc and mass roi datasets into "benign" and "malignant" classes leading to 4 different classes.
 
-### 3.2. File structure
+### 3.2. Preprocessing
+
+For each task the images are loaded and normalized using the truncated normalization method.
+This step is done by first cropping the image to the breast region through the Otsu threshold method.
+
+### 3.3. File structure
 
 For each task the script will create training and testing sets based on the original dataset split. For a given task the file structure will then look like :
 

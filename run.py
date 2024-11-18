@@ -4,6 +4,7 @@ import os
 from src.utils.metadata import correct_metadata_files
 from src.tasks.lesion import prepare_lesion_dataset, prepare_lesion_severity_dataset
 from src.tasks.roi import prepare_roi_severity_dataset
+from src.utils.print import read_poem
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="CBIS-DDSM data preparation")
@@ -34,7 +35,7 @@ if __name__ == "__main__":
             args.data_dir, args.out_dir, args.img_size)
     elif args.task == 'roi-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, 3)
+            args.data_dir, args.out_dir, args.img_size)
 
-    logging.info('Preparation done !')
-    logging.info('Exiting. May the force be with you')
+    logging.info('Preparation done. Have a piece of a french poem :')
+    read_poem()

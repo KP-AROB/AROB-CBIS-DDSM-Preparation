@@ -25,6 +25,11 @@ def crop_to_roi(img):
     return img[y: y + h, x: x + w], breast_mask[y: y + h, x: x + w], [x, y, w, h]
 
 
+def crop_img(img, coordinates):
+    x, y, w, h = coordinates
+    return img[y: y + h, x: x + w]
+
+
 def extract_patch(image, mask):
     padding = 1
     coords = np.argwhere(mask)
@@ -43,5 +48,4 @@ def random_crop(image, size=(200, 200)):
     height, width = image.shape[:2]
     top = random.randint(0, height - size[0])
     left = random.randint(0, width - size[1])
-
     return image[top:top + size[0], left:left + size[1]]
