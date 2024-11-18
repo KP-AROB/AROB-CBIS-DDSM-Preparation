@@ -4,6 +4,17 @@ from pydicom import dcmread
 from pydicom.pixel_data_handlers import apply_voi_lut
 
 
+def load_dicom_mask(roi_paths, x_shape):
+    if len(roi_paths) > 1:
+        for i in roi_paths:
+            mask = load_dicom_image(i)
+            if mask.shape == x_shape:
+                return mask
+    else:
+        mask = load_dicom_image(roi_paths[0])
+        return mask
+
+
 def load_dicom_image(path):
     ds = dcmread(path)
     img2d = ds.pixel_array

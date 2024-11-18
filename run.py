@@ -3,6 +3,7 @@ import logging
 import os
 from src.utils.metadata import correct_metadata_files
 from src.tasks.lesion import prepare_lesion_dataset, prepare_lesion_severity_dataset
+from src.tasks.roi import prepare_roi_severity_dataset
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="CBIS-DDSM data preparation")
@@ -21,18 +22,19 @@ if __name__ == "__main__":
 
     logging.info('Running CBIS-DDSM dataset preparation')
     logging.info(f'Creating dataset for {args.task} task')
-    correct_metadata_files(args.data_dir)
+    # correct_metadata_files(args.data_dir)
     logging.info(f'Corrected csv files saved at {args.data_dir}')
     os.makedirs(os.path.join(args.out_dir, args.task, 'train'), exist_ok=True)
     os.makedirs(os.path.join(args.out_dir, args.task, 'test'), exist_ok=True)
 
-    # if args.task == 'lesion':
-    #     prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
-    # elif args.task == 'lesion-severity':
-    #     prepare_lesion_severity_dataset(
-    #         args.data_dir, args.out_dir, args.img_size)
-    # elif args.task == 'roi-severity':
-    #     pass
+    if args.task == 'lesion':
+        prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
+    elif args.task == 'lesion-severity':
+        prepare_lesion_severity_dataset(
+            args.data_dir, args.out_dir, args.img_size)
+    elif args.task == 'roi-severity':
+        prepare_roi_severity_dataset(
+            args.data_dir, args.out_dir, args.img_size, 3)
 
     logging.info('Preparation done !')
     logging.info('Exiting. May the force be with you')
