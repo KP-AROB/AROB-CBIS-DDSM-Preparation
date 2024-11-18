@@ -23,12 +23,12 @@ You can run the preparation script with the following command and given flags :
 python run.py --data_dir ./cbis_ddsm --out_dir ./data
 ```
 
-| Flag                  | Description                                                                                       | Default Value   |
-|-----------------------|---------------------------------------------------------------------------------------------------|-----------------|
-| --data_dir            | The folder where the CBIS-DDSM dataset is stored                                                  | None            |
-| --out_dir             | The folder where the prepared dataset will be stored                                              | ./data          |
-| --img_size            | The size to which the image should be resized                                                     | 128             |
-| --task                | The task for which the dataset will be prepared ('lesion', 'mass-severity', 'calc-severity)       | 'lesion'        |
+| Flag                  | Description                                                                                                       | Default Value   |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------|-----------------|
+| --data_dir            | The folder where the CBIS-DDSM dataset is stored                                                                  | None            |
+| --out_dir             | The folder where the prepared dataset will be stored                                                              | ./data          |
+| --img_size            | The size to which the image should be resized                                                                     | 128             |
+| --task                | The task for which the dataset will be prepared ('lesion', 'lesion-severity', 'roi-severity)                      | 'lesion'        |
 
 
 ### 3.1. Dataset task
@@ -36,8 +36,8 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 We implemented different ways to prepare the dataset depending on the targetted classification system development.
 
 - ```lesion```: It's the original class split, it separates the dataset in two classes, namely "calc" and "mass"
-- ```mass-severity```: This task separates the mass dataset into "benign" and "malignant" classes
-- ```calc-severity```: This task separates the calc dataset into "benign" and "malignant" classes.
+- ```lesion-severity```: This task separates both calc and mass datasets into "benign" and "malignant" classes leading to 4 different classes.
+- ```roi-severity```: This task separates both calc and mass roi datasets into "benign" and "malignant" classes leading to 4 different classes.
 
 ### 3.2. File structure
 

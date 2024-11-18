@@ -17,11 +17,17 @@ def normalize_and_format_path(path: str) -> str:
     return "/".join(path_parts)
 
 
+def get_image_path_ids(row, key):
+    path = row[key]
+    path_segment = path.split(os.sep)
+    study_id = path_segment[1]
+    series_uid = path_segment[2]
+    return study_id, series_uid
+
+
 def correct_metadata_files(data_dir: str):
 
     metadata_df = pd.read_csv(os.path.join(data_dir, 'metadata.csv'))
-    metadata_df = metadata_df[metadata_df['Series Description']
-                              == 'full mammogram images']
 
     lesion_description_files = {
         f"{desc}_case_description_{set_type}_set": os.path.join(data_dir, f"{desc}_case_description_{set_type}_set.csv")
@@ -43,14 +49,30 @@ def correct_metadata_files(data_dir: str):
                 'ROI mask file path': 'roi_mask_file_path'})
 
             for idx, row in df.iterrows():
-                path = row['image_file_path']
-                path_segment = path.split(os.sep)
-                study_id = path_segment[1]
-                series_uid = path_segment[2]
-                metarow = metadata_df[(metadata_df['Series UID'] == series_uid) & (
-                    metadata_df['Study UID'] == study_id)]
-                correct_path = metarow['File Location'].values[0]
+                image_study_id, image_series_uid = get_image_path_ids(
+                    row, 'image_file_path')
+                roi_study_id, roi_series_uid = get_image_path_ids(
+                    row, 'roi_mask_file_path')
+                cropped_study_id, cropped_series_uid = get_image_path_ids(
+                    row, 'cropped_image_file_path')
+
+                meta_image = metadata_df[(metadata_df['Series UID'] == image_series_uid) & (
+                    metadata_df['Study UID'] == image_study_id)]
+                meta_roi = metadata_df[(metadata_df['Series UID'] == roi_series_uid) & (
+                    metadata_df['Study UID'] == roi_study_id)]
+                meta_cropped = metadata_df[(metadata_df['Series UID'] == cropped_series_uid) & (
+                    metadata_df['Study UID'] == cropped_study_id)]
+
+                correct_img_path = meta_image['File Location'].values[0]
+                correct_roi_path = meta_roi['File Location'].values[0]
+                correct_cropped_path = meta_cropped['File Location'].values[0]
+
                 df.loc[idx, 'image_file_path'] = normalize_and_format_path(
-                    correct_path)
+                    correct_img_path)
+                df.loc[idx, 'roi_mask_file_path'] = normalize_and_format_path(
+                    correct_roi_path)
+                df.loc[idx, 'cropped_image_file_path'] = normalize_and_format_path(
+                    correct_cropped_path)
+
             df.to_csv(os.path.join(data_dir, key + '_corrected.csv'))
             pbar.update()

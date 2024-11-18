@@ -1,10 +1,8 @@
 import argparse
 import logging
 import os
-import shutil
 from src.utils.metadata import correct_metadata_files
-from src.utils.dicom import load_dicom_image
-from src.tasks.lesion import prepare_lesion_dataset
+from src.tasks.lesion import prepare_lesion_dataset, prepare_lesion_severity_dataset
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="CBIS-DDSM data preparation")
@@ -12,7 +10,7 @@ if __name__ == "__main__":
     parser.add_argument("--out_dir", type=str, default='./data')
     parser.add_argument("--img_size", type=int, default=128)
     parser.add_argument("--task", type=str, default='lesion',
-                        choices=['lesion', 'mass-severity', 'calc-severity'])
+                        choices=['lesion', 'lesion-severity', 'roi-severity'])
     args = parser.parse_args()
 
     logging_message = "[AROB-2025-KAPTIOS-CBISDDSM]"
@@ -28,8 +26,13 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(args.out_dir, args.task, 'train'), exist_ok=True)
     os.makedirs(os.path.join(args.out_dir, args.task, 'test'), exist_ok=True)
 
-    if args.task == 'lesion':
-        prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
+    # if args.task == 'lesion':
+    #     prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
+    # elif args.task == 'lesion-severity':
+    #     prepare_lesion_severity_dataset(
+    #         args.data_dir, args.out_dir, args.img_size)
+    # elif args.task == 'roi-severity':
+    #     pass
 
     logging.info('Preparation done !')
     logging.info('Exiting. May the force be with you')
