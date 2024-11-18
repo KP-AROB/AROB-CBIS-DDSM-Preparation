@@ -14,7 +14,6 @@ if __name__ == "__main__":
     parser.add_argument("--task", type=str, default='lesion',
                         choices=['lesion', 'mass-severity', 'calc-severity'])
     args = parser.parse_args()
-    shutil.rmtree(os.path.join(args.out_dir, args.task), ignore_errors=True)
 
     logging_message = "[AROB-2025-KAPTIOS-CBISDDSM]"
     logging.basicConfig(
@@ -31,3 +30,6 @@ if __name__ == "__main__":
 
     if args.task == 'lesion':
         prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
+
+    logging.info('Preparation done !')
+    logging.info('Exiting. May the force be with you')

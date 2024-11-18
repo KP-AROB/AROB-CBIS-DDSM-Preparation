@@ -2,6 +2,7 @@ from glob import glob
 import logging
 import os
 import cv2
+import shutil
 from tqdm import tqdm
 from src.utils.dicom import load_dicom_image
 import pandas as pd
@@ -33,6 +34,7 @@ def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int):
         img_size (int): New image size
     """
     task = 'lesion'
+    shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
     for csv_data_file in glob(data_dir + '/*corrected.csv'):
         logging.info(f'Saving images defined in {csv_data_file}')
         data_type = 'train' if 'train' in csv_data_file else 'test'
