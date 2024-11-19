@@ -28,6 +28,7 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 | --data_dir            | The folder where the CBIS-DDSM dataset is stored                                                                  | None            |
 | --out_dir             | The folder where the prepared dataset will be stored                                                              | ./data          |
 | --img_size            | The size to which the image should be resized                                                                     | 128             |
+| --aug_ratio           | The number of new images to create with augmentations                                                             | 0               |
 | --task                | The task for which the dataset will be prepared ('lesion', 'lesion-severity', 'roi-severity)                      | 'lesion'        |
 
 
@@ -64,6 +65,25 @@ For each task the script will create training and testing sets based on the orig
             - 📂 calc/
                 - 📄 01.png
                 - 📄 02.png
+
+
+### 3.4. Data augmentation
+
+The dataset can be augmented during the preparation process following a pre-defined pipeline, the augmentation can be called with the ```--aug_ratio``` flag.
+This ratio controls the amount of new images (per scan) that will be created. By default this flag has a value of 0 meaning that the dataset will not be augmented.
+
+This augmentation process uses the albumentations library and the augmentation pipeline follows the following code : 
+
+```python
+
+transform = A.Compose([
+    A.HorizontalFlip(p=0.5),    
+    A.VerticalFlip(p=0.5),    
+    A.ElasticTransform(p=0.2),
+    A.Rotate(limit=90, p=1.0)
+])
+
+```
 
 ## 4. Data Statistics
 
