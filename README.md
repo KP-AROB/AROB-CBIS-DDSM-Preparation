@@ -64,3 +64,10 @@ For each task the script will create training and testing sets based on the orig
             - 📂 calc/
                 - 📄 01.png
                 - 📄 02.png
+
+## 4. Data Statistics
+
+### 4.1. roi-severity task
+
+- Mean : 0.5451
+- Standard Deviation : 0.1577

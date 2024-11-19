@@ -4,12 +4,30 @@ from pydicom import dcmread
 from pydicom.pixel_data_handlers import apply_voi_lut
 
 
-def load_dicom_mask(roi_paths, x_shape):
+def load_dicom_mask(roi_paths: list, x_shape: tuple):
+    """Loads the ROI mask associated to a mammogram.
+    As some of the studies have 2 ROI files (one mask and one image patch) and that no information
+    is given regarding their nature. This function checks which mask image has the same shape as the original data.
+    If no match is found, the smallest image is returned, being the abnormality image patch.
+
+    Args:
+        roi_paths (list): List of ROI files
+        x_shape (tuple): Shape of the original mammogram image
+
+    Returns:
+        np.array: image mask or image patch
+    """
     if len(roi_paths) > 1:
-        for i in roi_paths:
-            mask = load_dicom_image(i)
-            if mask.shape == x_shape:
-                return mask
+        base_mask = load_dicom_image(roi_paths[0])
+        second_mask = load_dicom_image(roi_paths[1])
+        if base_mask.shape == x_shape:
+            return base_mask
+        elif second_mask.shape == x_shape:
+            return second_mask
+        elif np.prod(base_mask.shape) < np.prod(second_mask.shape):
+            return base_mask
+        else:
+            return second_mask
     else:
         mask = load_dicom_image(roi_paths[0])
         return mask
