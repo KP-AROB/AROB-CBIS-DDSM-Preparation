@@ -27,7 +27,7 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 |-----------------------|-------------------------------------------------------------------------------------------------------------------|-----------------|
 | --data_dir            | The folder where the CBIS-DDSM dataset is stored                                                                  | None            |
 | --out_dir             | The folder where the prepared dataset will be stored                                                              | ./data          |
-| --img_size            | The size to which the image should be resized                                                                     | 128             |
+| --img_size            | The size to which the image should be resized                                                                     | 256             |
 | --aug_ratio           | The number of new images to create with augmentations                                                             | 0               |
 | --task                | The task for which the dataset will be prepared                                                                   | 'roi-severity'  |
 

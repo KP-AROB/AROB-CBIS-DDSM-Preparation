@@ -12,10 +12,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="CBIS-DDSM data preparation")
     parser.add_argument("--data_dir", type=str, required=True)
     parser.add_argument("--out_dir", type=str, default='./data')
-    parser.add_argument("--img_size", type=int, default=128)
+    parser.add_argument("--img_size", type=int, default=256)
     parser.add_argument("--aug_ratio", type=int, default=0)
-    parser.add_argument("--task", type=str, default='roi-severity',
-                        choices=['scan', 'scan-severity', 'scan-mass-severity', 'scan-mass-severity', 'roi-severity', 'roi-mass-severity', 'roi-calc-severity'])
+    parser.add_argument("--task", type=str, default='roi-severity', choices=['scan', 'scan-severity',
+                                                                             'scan-mass-severity', 'scan-mass-severity',
+                                                                             'roi-severity', 'roi-mass-severity',
+                                                                             'roi-calc-severity'])
     args = parser.parse_args()
 
     logging_message = "[AROB-2025-KAPTIOS-CBISDDSM]"

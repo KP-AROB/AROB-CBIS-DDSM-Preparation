@@ -6,15 +6,14 @@ from glob import glob
 from tqdm import tqdm
 
 
-def make_augmentation(data_dir, num_augmentations: int = 5):
+def make_augmentation(data_dir, num_augmentations: int = 3):
 
     logging.info("Running data augmentation")
 
     augmentation_pipeline = A.Compose([
         A.HorizontalFlip(p=0.5),
         A.VerticalFlip(p=0.5),
-        A.ElasticTransform(p=0.5),
-        A.Rotate(limit=90, p=0.5),
+        A.ElasticTransform(p=0.5, alpha=10, sigma=50),
     ])
 
     label_folders = glob(os.path.join(data_dir, '*'))
