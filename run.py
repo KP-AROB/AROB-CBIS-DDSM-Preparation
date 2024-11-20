@@ -15,7 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("--img_size", type=int, default=128)
     parser.add_argument("--aug_ratio", type=int, default=0)
     parser.add_argument("--task", type=str, default='roi-severity',
-                        choices=['lesion', 'lesion-severity', 'roi-severity', 'roi-mass-severity', 'roi-calc-severity'])
+                        choices=['scan', 'scan-severity', 'scan-mass-severity', 'scan-mass-severity', 'roi-severity', 'roi-mass-severity', 'roi-calc-severity'])
     args = parser.parse_args()
 
     logging_message = "[AROB-2025-KAPTIOS-CBISDDSM]"
@@ -33,11 +33,17 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(args.out_dir, args.task, 'train'), exist_ok=True)
     os.makedirs(os.path.join(args.out_dir, args.task, 'test'), exist_ok=True)
 
-    if args.task == 'lesion':
+    if args.task == 'scan':
         prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
-    elif args.task == 'lesion-severity':
+    elif args.task == 'scan-severity':
         prepare_lesion_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size)
+            args.data_dir, args.out_dir, args.img_size, args.task)
+    elif args.task == 'scan-mass-severity':
+        prepare_lesion_severity_dataset(
+            args.data_dir, args.out_dir, args.img_size, args.task, 'mass')
+    elif args.task == 'scan-calc-severity':
+        prepare_lesion_severity_dataset(
+            args.data_dir, args.out_dir, args.img_size, args.task, 'calc')
     elif args.task == 'roi-severity':
         prepare_roi_severity_dataset(
             args.data_dir, args.out_dir, args.img_size, args.task)
