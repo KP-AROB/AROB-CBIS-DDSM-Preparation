@@ -29,7 +29,7 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 | --out_dir             | The folder where the prepared dataset will be stored                                                              | ./data          |
 | --img_size            | The size to which the image should be resized                                                                     | 128             |
 | --aug_ratio           | The number of new images to create with augmentations                                                             | 0               |
-| --task                | The task for which the dataset will be prepared ('lesion', 'lesion-severity', 'roi-severity)                      | 'lesion'        |
+| --task                | The task for which the dataset will be prepared                                                                   | 'roi-severity'  |
 
 
 ### 3.1. Dataset task
@@ -39,6 +39,8 @@ We implemented different ways to prepare the dataset depending on the targetted 
 - ```lesion```: It's the original class split, it separates the dataset in two classes, namely "calc" and "mass"
 - ```lesion-severity```: This task separates both calc and mass datasets into "benign" and "malignant" classes leading to 4 different classes.
 - ```roi-severity```: This task separates both calc and mass roi datasets into "benign" and "malignant" classes leading to 4 different classes.
+- ```roi-mass-severity```: This task separates mass roi datasets into "benign" and "malignant" classes.
+- ```roi-calc-severity```: This task separates calc roi datasets into "benign" and "malignant" classes.
 
 ### 3.2. Preprocessing
 

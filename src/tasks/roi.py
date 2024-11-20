@@ -48,10 +48,11 @@ def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int)
         print(f"Failed to process row {row['roi_mask_file_path']}: {e}")
 
 
-def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int):
-    task = 'roi-severity'
+def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, roi_type: str = None):
     shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
-    for csv_data_file in glob(data_dir + '/*corrected.csv'):
+    csv_file_list = glob(data_dir + '/*corrected.csv') if not roi_type else glob(
+        data_dir + f'/*{roi_type}*corrected.csv')
+    for csv_data_file in csv_file_list:
         logging.info(f'Saving images defined in {csv_data_file}')
         data_type = 'train' if 'train' in csv_data_file else 'test'
         df = pd.read_csv(csv_data_file)
