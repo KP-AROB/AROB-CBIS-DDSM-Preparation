@@ -15,7 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("--img_size", type=int, default=256)
     parser.add_argument("--aug_ratio", type=int, default=0)
     parser.add_argument("--task", type=str, default='roi-severity', choices=['scan', 'scan-severity',
-                                                                             'scan-mass-severity', 'scan-mass-severity',
+                                                                             'scan-mass-severity', 'scan-calc-severity',
                                                                              'roi-severity', 'roi-mass-severity',
                                                                              'roi-calc-severity'])
     args = parser.parse_args()
