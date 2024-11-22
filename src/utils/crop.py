@@ -30,7 +30,7 @@ def crop_img(img, coordinates):
     return img[y: y + h, x: x + w]
 
 
-def extract_patch(image, mask, padding=50):
+def extract_patch(image, mask, padding=20):
     coords = np.argwhere(mask)
     y_min, x_min = coords.min(axis=0)
     y_max, x_max = coords.max(axis=0)
