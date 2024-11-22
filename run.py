@@ -36,7 +36,8 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(args.out_dir, args.task, 'test'), exist_ok=True)
 
     if args.task == 'scan':
-        prepare_lesion_dataset(args.data_dir, args.out_dir, args.img_size)
+        prepare_lesion_dataset(
+            args.data_dir, args.out_dir, args.img_size, args.task)
     elif args.task == 'scan-severity':
         prepare_lesion_severity_dataset(
             args.data_dir, args.out_dir, args.img_size, args.task)

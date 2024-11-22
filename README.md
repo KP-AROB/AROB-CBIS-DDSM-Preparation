@@ -34,10 +34,12 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 
 ### 3.1. Dataset task
 
-We implemented different ways to prepare the dataset depending on the targetted classification system development.
+We implemented different ways to prepare the dataset depending on the targetted classification system development. The tasks with keyword "scan" will prepare a whole breast image dataset, while the "roi" keyword is used to only extract roi patches.
 
-- ```scan```: It's the original class split, it separates the dataset in two classes, namely "calc" and "mass"
+- ```scan```: It's the original class split, it separates the image dataset in two classes, namely "calc" and "mass"
 - ```scan-severity```: This task separates both calc and mass datasets into "benign" and "malignant" classes leading to 4 different classes.
+- ```scan-mass-severity```: This task separates the mass scan datasets into "benign" and "malignant" classes.
+- ```scan-calc-severity```: This task separates the cacl scan datasets into "benign" and "malignant" classes.
 - ```roi-severity```: This task separates both calc and mass roi datasets into "benign" and "malignant" classes leading to 4 different classes.
 - ```roi-mass-severity```: This task separates mass roi datasets into "benign" and "malignant" classes.
 - ```roi-calc-severity```: This task separates calc roi datasets into "benign" and "malignant" classes.

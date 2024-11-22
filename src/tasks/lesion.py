@@ -31,7 +31,7 @@ def prepare_lesion_row(row, data_dir: str, out_folder: str, img_size: int, sever
     cv2.imwrite(output_image_path, resized_image)
 
 
-def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int):
+def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int, task: str):
     """Prepare the CBIS dataset for lesion specific classification
 
     Args:
@@ -40,7 +40,6 @@ def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int):
         img_size (int): New image size
         severity (bool): Whether to create classes for pathologies or not
     """
-    task = 'lesion'
     shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
     for csv_data_file in glob(data_dir + '/*corrected.csv'):
         logging.info(f'Saving images defined in {csv_data_file}')
