@@ -13,6 +13,7 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str, required=True)
     parser.add_argument("--out_dir", type=str, default='./data')
     parser.add_argument("--img_size", type=int, default=256)
+    parser.add_argument("--patch_padding", type=int, default=200)
     parser.add_argument("--aug_ratio", type=int, default=0)
     parser.add_argument("--task", type=str, default='roi-severity', choices=['scan', 'scan-severity',
                                                                              'scan-mass-severity', 'scan-calc-severity',
@@ -49,13 +50,13 @@ if __name__ == "__main__":
             args.data_dir, args.out_dir, args.img_size, args.task, 'calc')
     elif args.task == 'roi-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task)
+            args.data_dir, args.out_dir, args.img_size, args.task, args.patch_padding)
     elif args.task == 'roi-mass-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, 'mass')
+            args.data_dir, args.out_dir, args.img_size, args.task, 'mass', args.patch_padding)
     elif args.task == 'roi-calc-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, 'calc')
+            args.data_dir, args.out_dir, args.img_size, args.task, 'calc', args.patch_padding)
 
     if args.aug_ratio > 0:
         make_augmentation(os.path.join(args.out_dir, args.task, 'train'))

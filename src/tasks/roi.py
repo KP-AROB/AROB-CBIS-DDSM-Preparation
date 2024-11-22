@@ -10,7 +10,7 @@ from src.utils.crop import random_crop, extract_patch
 from concurrent.futures import ProcessPoolExecutor
 
 
-def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int):
+def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int, patch_padding: int):
     # some cropped_image_file_path are equal to roi_image_path
     # here we check if a cropped image folder is available to load the image mask
     mask_file_path = row['roi_mask_file_path'] if 'cropped' not in row['cropped_image_file_path'] else row['cropped_image_file_path']
@@ -27,27 +27,22 @@ def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int)
         if mask.shape != image.shape:
             patch = mask
         else:
-            patch = extract_patch(image, mask)
+            patch = extract_patch(image, mask, patch_padding)
 
-        crops_size = min(patch.shape) - 20
-        patches = [random_crop(patch, size=(crops_size, crops_size))
-                   for _ in range(3)]
-
-        for idx, p in enumerate(patches):
-            resized_patch = cv2.resize(
-                p,
-                (img_size, img_size),
-                interpolation=cv2.INTER_LINEAR,
-            )
-            output_image_path = os.path.join(
-                out_folder, '{}_{}'.format(row['abnormality type'], sev), "{}_{}.png".format(row.name, idx))
-            cv2.imwrite(output_image_path, resized_patch)
+        resized_patch = cv2.resize(
+            patch,
+            (img_size, img_size),
+            interpolation=cv2.INTER_LINEAR
+        )
+        output_image_path = os.path.join(
+            out_folder, '{}_{}'.format(row['abnormality type'], sev), "{}.png".format(row.name))
+        cv2.imwrite(output_image_path, resized_patch)
 
     except Exception as e:
         print(f"Failed to process row {row['roi_mask_file_path']}: {e}")
 
 
-def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, roi_type: str = None):
+def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, roi_type: str = None, patch_padding: int = 200):
     shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
     csv_file_list = glob(data_dir + '/*corrected.csv') if not roi_type else glob(
         data_dir + f'/*{roi_type}*corrected.csv')
@@ -71,6 +66,7 @@ def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, tas
                         [data_dir] * len(df),
                         [out_folder] * len(df),
                         [img_size] * len(df),
+                        [patch_padding] * len(df)
                     ),
                     total=len(df),
                 )
