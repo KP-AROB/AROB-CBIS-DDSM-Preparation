@@ -20,14 +20,13 @@ def load_dicom_mask(roi_paths: list, x_shape: tuple):
     if len(roi_paths) > 1:
         base_mask = load_dicom_image(roi_paths[0])
         second_mask = load_dicom_image(roi_paths[1])
-        if base_mask.shape == x_shape:
+
+        if base_mask.shape == (x_shape[0], x_shape[1]):
             return base_mask
-        elif second_mask.shape == x_shape:
+        elif second_mask.shape == (x_shape[0], x_shape[1]):
             return second_mask
-        elif np.prod(base_mask.shape) < np.prod(second_mask.shape):
-            return base_mask
         else:
-            return second_mask
+            return None
     else:
         mask = load_dicom_image(roi_paths[0])
         return mask

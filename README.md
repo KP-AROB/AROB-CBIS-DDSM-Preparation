@@ -30,6 +30,7 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 | --img_size            | The size to which the image should be resized                                                                     | 256             |
 | --aug_ratio           | The number of new images to create with augmentations                                                             | 0               |
 | --task                | The task for which the dataset will be prepared                                                                   | 'roi-severity'  |
+| --patch_padding       | The size of the padding around the ROI patches                                                                    | 100             |
 
 
 ### 3.1. Dataset task
@@ -84,7 +85,7 @@ transform = A.Compose([
     A.HorizontalFlip(p=0.5),    
     A.VerticalFlip(p=0.5),    
     A.ElasticTransform(p=0.2),
-    A.Rotate(limit=90, p=1.0)
+    A.CLAHE(p=0.5),
 ])
 
 ```
@@ -95,3 +96,8 @@ transform = A.Compose([
 
 - Mean : 0.5451
 - Standard Deviation : 0.1577
+
+### 4.2. Synthetized roi-mass-severity task
+
+- Mean : 0.5344
+- Standard Deviation : 0.1731

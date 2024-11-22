@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 
 
@@ -17,3 +18,15 @@ def truncate_normalization(img: np.array, mask: np.array):
     normalized = (truncated - Pmin) / (Pmax - Pmin)
     normalized[mask == 0] = 0
     return np.array(normalized * 255, dtype=np.uint8)
+
+
+def clahe(img, clip=1.5):
+    """
+    Image enhancement.
+    @img : numpy array image
+    @clip : float, clip limit for CLAHE algorithm
+    return: numpy array of the enhanced image
+    """
+    clahe = cv2.createCLAHE(clipLimit=clip)
+    cl = clahe.apply(img)
+    return cl

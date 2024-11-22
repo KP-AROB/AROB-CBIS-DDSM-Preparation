@@ -14,7 +14,7 @@ def make_augmentation(data_dir, num_augmentations: int = 3):
         A.HorizontalFlip(p=0.5),
         A.VerticalFlip(p=0.5),
         A.ElasticTransform(p=0.5, alpha=10, sigma=50),
-        A.CLAHE(p=0.5),
+        A.ShiftScaleRotate(p=0.5, rotate_limit=10, scale_limit=.5)
     ])
 
     label_folders = glob(os.path.join(data_dir, '*'))

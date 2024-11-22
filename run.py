@@ -13,8 +13,8 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str, required=True)
     parser.add_argument("--out_dir", type=str, default='./data')
     parser.add_argument("--img_size", type=int, default=256)
-    parser.add_argument("--patch_padding", type=int, default=200)
-    parser.add_argument("--aug_ratio", type=int, default=0)
+    parser.add_argument("--patch_padding", type=int, default=100)
+    parser.add_argument("--aug_ratio", type=int, default=8)
     parser.add_argument("--task", type=str, default='roi-severity', choices=['scan', 'scan-severity',
                                                                              'scan-mass-severity', 'scan-calc-severity',
                                                                              'roi-severity', 'roi-mass-severity',
@@ -59,7 +59,8 @@ if __name__ == "__main__":
             args.data_dir, args.out_dir, args.img_size, args.task, 'calc', args.patch_padding)
 
     if args.aug_ratio > 0:
-        make_augmentation(os.path.join(args.out_dir, args.task, 'train'))
+        make_augmentation(os.path.join(
+            args.out_dir, args.task, 'train'), args.aug_ratio)
 
     logging.info('You made it. Have a piece of a french poem :')
     read_poem()

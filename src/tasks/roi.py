@@ -6,38 +6,33 @@ import pandas as pd
 from tqdm import tqdm
 from glob import glob
 from src.utils.dicom import load_dicom_image, load_dicom_mask
-from src.utils.crop import random_crop, extract_patch
+from src.utils.crop import extract_patch
 from concurrent.futures import ProcessPoolExecutor
+from src.utils.preprocessing import clahe
 
 
 def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int, patch_padding: int):
-    # some cropped_image_file_path are equal to roi_image_path
-    # here we check if a cropped image folder is available to load the image mask
-    mask_file_path = row['roi_mask_file_path'] if 'cropped' not in row['cropped_image_file_path'] else row['cropped_image_file_path']
     try:
         sev = 'BENIGN' if row['pathology'] == 'BENIGN_WITHOUT_CALLBACK' else row['pathology']
         image_path = os.path.join(data_dir, row['image_file_path'])
         image = load_dicom_image(glob(image_path + '/*.dcm')[0])
-        mask_file_path = row['roi_mask_file_path'] if 'cropped' not in row[
-            'cropped_image_file_path'] else row['cropped_image_file_path']
+        image = cv2.merge((image, clahe(image, 1.0), clahe(image, 2.0)))
+        mask_file_path = row['roi_mask_file_path']
         mask_path = glob(os.path.join(data_dir, mask_file_path, '*.dcm'))
         mask = load_dicom_mask(mask_path, image.shape)
-        # 3. Extract normalized patch from using cropped mask.
-        # If mask.shape is not equal to image shape, that means a patch was returned as a mask
-        if mask.shape != image.shape:
-            patch = mask
-        else:
+
+        if mask is not None:
             patch = extract_patch(image, mask, patch_padding)
-
-        resized_patch = cv2.resize(
-            patch,
-            (img_size, img_size),
-            interpolation=cv2.INTER_LINEAR
-        )
-        output_image_path = os.path.join(
-            out_folder, '{}_{}'.format(row['abnormality type'], sev), "{}.png".format(row.name))
-        cv2.imwrite(output_image_path, resized_patch)
-
+            resized_patch = cv2.resize(
+                patch,
+                (img_size, img_size),
+                interpolation=cv2.INTER_LINEAR
+            )
+            output_image_path = os.path.join(
+                out_folder, '{}_{}'.format(row['abnormality type'], sev), "{}.png".format(row.name))
+            cv2.imwrite(output_image_path, resized_patch)
+        else:
+            raise
     except Exception as e:
         print(f"Failed to process row {row['roi_mask_file_path']}: {e}")
 
