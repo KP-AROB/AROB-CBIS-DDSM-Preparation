@@ -7,6 +7,7 @@ from tqdm import tqdm
 from src.utils.dicom import load_dicom_image
 import pandas as pd
 from concurrent.futures import ProcessPoolExecutor
+from src.utils.preprocessing import clahe
 
 
 def prepare_lesion_row(row, data_dir: str, out_folder: str, img_size: int, severity: bool = False):
@@ -15,6 +16,8 @@ def prepare_lesion_row(row, data_dir: str, out_folder: str, img_size: int, sever
     image = glob(image_path + '/*.dcm')[0]
 
     original_image = load_dicom_image(image)
+    original_image = cv2.merge((original_image, clahe(
+        original_image, 1.0), clahe(original_image, 2.0)))
     resized_image = cv2.resize(
         original_image,
         (img_size, img_size),
