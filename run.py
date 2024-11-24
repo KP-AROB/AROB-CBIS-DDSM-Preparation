@@ -64,7 +64,7 @@ if __name__ == "__main__":
         synthetize_str = "_synthetized" if args.synthetize else ""
         task = f"{args.task}{synthetize_str}"
         make_augmentation(os.path.join(
-            args.out_dir, args.task, 'train'), args.aug_ratio)
+            args.out_dir, task, 'train'), args.aug_ratio)
 
     logging.info('You made it. Have a piece of a french poem :')
     read_poem()
