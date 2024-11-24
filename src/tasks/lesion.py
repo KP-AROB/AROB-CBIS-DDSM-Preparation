@@ -50,7 +50,8 @@ def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int, task: str
         data_type = 'train' if 'train' in csv_data_file else 'test'
         df = pd.read_csv(csv_data_file)
         cls = df['abnormality type'].iloc[0]
-        out_folder = os.path.join(out_dir, task,
+        syn_str = 'synthetized' if synthetize else ''
+        out_folder = os.path.join(out_dir, task + syn_str,
                                   data_type, cls)
         os.makedirs(out_folder, exist_ok=True)
 
@@ -88,7 +89,8 @@ def prepare_lesion_severity_dataset(data_dir: str, out_dir: str, img_size: int, 
         df = pd.read_csv(csv_data_file)
         cls = df['abnormality type'].iloc[0]
         pathologies = ['BENIGN', 'MALIGNANT']
-        out_folder = os.path.join(out_dir, task,
+        syn_str = '_synthetized' if synthetize else ''
+        out_folder = os.path.join(out_dir, task + syn_str,
                                   data_type)
         for i in pathologies:
             os.makedirs(os.path.join(out_folder, f'{cls}_{i}'), exist_ok=True)
@@ -103,6 +105,7 @@ def prepare_lesion_severity_dataset(data_dir: str, out_dir: str, img_size: int, 
                         [out_folder] * len(df),
                         [img_size] * len(df),
                         [True] * len(df),
+                        [synthetize] * len(df)
                     ),
                     total=len(df),
                 )
