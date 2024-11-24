@@ -31,7 +31,7 @@ python run.py --data_dir ./cbis_ddsm --out_dir ./data
 | --aug_ratio           | The number of new images to create with augmentations                                                             | 0               |
 | --task                | The task for which the dataset will be prepared                                                                   | 'roi-severity'  |
 | --patch_padding       | The size of the padding around the ROI patches                                                                    | 100             |
-
+| --synthetize          | Wether to create synthetized scans or not (using CLAHE algorithm)                                                 | False           |
 
 ### 3.1. Dataset task
 
@@ -82,10 +82,10 @@ This augmentation process uses the albumentations library and the augmentation p
 ```python
 
 transform = A.Compose([
-    A.HorizontalFlip(p=0.5),    
-    A.VerticalFlip(p=0.5),    
-    A.ElasticTransform(p=0.2),
-    A.CLAHE(p=0.5),
+     A.HorizontalFlip(p=0.5),
+    A.VerticalFlip(p=0.5),
+    A.Rotate(limit=45, always_apply=True,
+                border_mode=cv2.BORDER_CONSTANT, p=1.0),
 ])
 
 ```
@@ -101,3 +101,8 @@ transform = A.Compose([
 
 - Mean : 0.5344
 - Standard Deviation : 0.1731
+
+### 4.2. Synthetized scan-severity task
+
+- Mean : 0.2233
+- Standard Deviation : 0.2723
