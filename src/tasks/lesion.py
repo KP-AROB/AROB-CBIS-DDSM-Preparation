@@ -10,14 +10,15 @@ from concurrent.futures import ProcessPoolExecutor
 from src.utils.preprocessing import clahe
 
 
-def prepare_lesion_row(row, data_dir: str, out_folder: str, img_size: int, severity: bool = False):
+def prepare_lesion_row(row, data_dir: str, out_folder: str, img_size: int, severity: bool = False, synthetize: bool = False):
     image_path = os.path.join(
         data_dir, row['image_file_path'])
     image = glob(image_path + '/*.dcm')[0]
 
     original_image = load_dicom_image(image)
-    original_image = cv2.merge((original_image, clahe(
-        original_image, 1.0), clahe(original_image, 2.0)))
+    if synthetize:
+        original_image = cv2.merge((original_image, clahe(
+            original_image, 1.0), clahe(original_image, 2.0)))
     resized_image = cv2.resize(
         original_image,
         (img_size, img_size),
@@ -34,7 +35,7 @@ def prepare_lesion_row(row, data_dir: str, out_folder: str, img_size: int, sever
     cv2.imwrite(output_image_path, resized_image)
 
 
-def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int, task: str):
+def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int, task: str, synthetize: bool = False):
     """Prepare the CBIS dataset for lesion specific classification
 
     Args:
@@ -62,13 +63,14 @@ def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int, task: str
                         [data_dir] * len(df),
                         [out_folder] * len(df),
                         [img_size] * len(df),
+                        [synthetize] * len(df)
                     ),
                     total=len(df),
                 )
             )
 
 
-def prepare_lesion_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, lesion_type: str = None):
+def prepare_lesion_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, lesion_type: str = None, synthetize: bool = False):
     """Prepare the CBIS dataset for lesion severity specific classification
 
     Args:

@@ -13,6 +13,7 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str, required=True)
     parser.add_argument("--out_dir", type=str, default='./data')
     parser.add_argument("--img_size", type=int, default=256)
+    parser.add_argument("--synthetize", action='store_true')
     parser.add_argument("--patch_padding", type=int, default=100)
     parser.add_argument("--aug_ratio", type=int, default=8)
     parser.add_argument("--task", type=str, default='roi-severity', choices=['scan', 'scan-severity',
@@ -20,6 +21,7 @@ if __name__ == "__main__":
                                                                              'roi-severity', 'roi-mass-severity',
                                                                              'roi-calc-severity'])
     args = parser.parse_args()
+    parser.set_defaults(synthetize=False)
 
     logging_message = "[AROB-2025-KAPTIOS-CBISDDSM]"
     logging.basicConfig(
@@ -38,16 +40,16 @@ if __name__ == "__main__":
 
     if args.task == 'scan':
         prepare_lesion_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task)
+            args.data_dir, args.out_dir, args.img_size, args.task, synthetize=args.synthetize)
     elif args.task == 'scan-severity':
         prepare_lesion_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task)
+            args.data_dir, args.out_dir, args.img_size, args.task, synthetize=args.synthetize)
     elif args.task == 'scan-mass-severity':
         prepare_lesion_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, 'mass')
+            args.data_dir, args.out_dir, args.img_size, args.task, 'mass', synthetize=args.synthetize)
     elif args.task == 'scan-calc-severity':
         prepare_lesion_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, 'calc')
+            args.data_dir, args.out_dir, args.img_size, args.task, 'calc', synthetize=args.synthetize)
     elif args.task == 'roi-severity':
         prepare_roi_severity_dataset(
             args.data_dir, args.out_dir, args.img_size, args.task, patch_padding=args.patch_padding)

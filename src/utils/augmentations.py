@@ -16,7 +16,6 @@ def make_augmentation(data_dir, num_augmentations: int = 3):
         A.ElasticTransform(always_apply=True, alpha=10, sigma=20),
         A.RandomBrightnessContrast(
             always_apply=True, contrast_limit=0.2, brightness_limit=0.2),
-        A.Rotate(always_apply=True, limit=45),
     ])
 
     label_folders = glob(os.path.join(data_dir, '*'))
