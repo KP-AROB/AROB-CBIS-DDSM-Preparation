@@ -11,12 +11,13 @@ from concurrent.futures import ProcessPoolExecutor
 from src.utils.preprocessing import clahe
 
 
-def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int, patch_padding: int):
+def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int, patch_padding: int, synthetize: bool = False):
     try:
         sev = 'BENIGN' if row['pathology'] == 'BENIGN_WITHOUT_CALLBACK' else row['pathology']
         image_path = os.path.join(data_dir, row['image_file_path'])
         image = load_dicom_image(glob(image_path + '/*.dcm')[0])
-        image = cv2.merge((image, clahe(image, 1.0), clahe(image, 2.0)))
+        if synthetize:
+            image = cv2.merge((image, clahe(image, 1.0), clahe(image, 2.0)))
         mask_file_path = row['roi_mask_file_path']
         mask_path = glob(os.path.join(data_dir, mask_file_path, '*.dcm'))
         mask = load_dicom_mask(mask_path, image.shape)
@@ -37,7 +38,7 @@ def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int,
         print(f"Failed to process row {row['roi_mask_file_path']}: {e}")
 
 
-def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, roi_type: str = None, patch_padding: int = 200):
+def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, roi_type: str = None, patch_padding: int = 200, synthetize: bool = False):
     shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
     csv_file_list = glob(data_dir + '/*corrected.csv') if not roi_type else glob(
         data_dir + f'/*{roi_type}*corrected.csv')
@@ -61,7 +62,8 @@ def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, tas
                         [data_dir] * len(df),
                         [out_folder] * len(df),
                         [img_size] * len(df),
-                        [patch_padding] * len(df)
+                        [patch_padding] * len(df),
+                        [synthetize] * len(df)
                     ),
                     total=len(df),
                 )

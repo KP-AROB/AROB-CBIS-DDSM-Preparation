@@ -52,13 +52,13 @@ if __name__ == "__main__":
             args.data_dir, args.out_dir, args.img_size, args.task, 'calc', synthetize=args.synthetize)
     elif args.task == 'roi-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, patch_padding=args.patch_padding)
+            args.data_dir, args.out_dir, args.img_size, args.task, patch_padding=args.patch_padding, synthetize=args.synthetize)
     elif args.task == 'roi-mass-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, roi_type='mass', patch_padding=args.patch_padding)
+            args.data_dir, args.out_dir, args.img_size, args.task, roi_type='mass', patch_padding=args.patch_padding, synthetize=args.synthetize)
     elif args.task == 'roi-calc-severity':
         prepare_roi_severity_dataset(
-            args.data_dir, args.out_dir, args.img_size, args.task, roi_type='calc', patch_padding=args.patch_padding)
+            args.data_dir, args.out_dir, args.img_size, args.task, roi_type='calc', patch_padding=args.patch_padding, synthetize=args.synthetize)
 
     if args.aug_ratio > 0:
         make_augmentation(os.path.join(
