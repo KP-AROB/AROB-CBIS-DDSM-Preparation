@@ -61,7 +61,8 @@ if __name__ == "__main__":
             args.data_dir, args.out_dir, args.img_size, args.task, roi_type='calc', patch_padding=args.patch_padding, synthetize=args.synthetize)
 
     if args.aug_ratio > 0:
-        task = f"{args.task}_{"synthetize" if args.synthetize else ""}"
+        synthetize_str = "_synthetized" if args.synthetize else ""
+        task = f"{args.task}{synthetize_str}"
         make_augmentation(os.path.join(
             args.out_dir, args.task, 'train'), args.aug_ratio)
 
