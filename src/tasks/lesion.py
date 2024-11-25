@@ -44,7 +44,8 @@ def prepare_lesion_dataset(data_dir: str, out_dir: str, img_size: int, task: str
         img_size (int): New image size
         severity (bool): Whether to create classes for pathologies or not
     """
-    shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
+    shutil.rmtree(os.path.join(
+        out_dir, task, "_synthetized" if synthetize else ""), ignore_errors=True)
     for csv_data_file in glob(data_dir + '/*corrected.csv'):
         logging.info(f'Saving images defined in {csv_data_file}')
         data_type = 'train' if 'train' in csv_data_file else 'test'
@@ -80,7 +81,8 @@ def prepare_lesion_severity_dataset(data_dir: str, out_dir: str, img_size: int, 
         img_size (int): New image size
         severity (bool): Whether to create classes for pathologies or not
     """
-    shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
+    shutil.rmtree(os.path.join(
+        out_dir, task, "_synthetized" if synthetize else ""), ignore_errors=True)
     csv_file_list = glob(data_dir + '/*corrected.csv') if not lesion_type else glob(
         data_dir + f'/*{lesion_type}*corrected.csv')
     for csv_data_file in csv_file_list:

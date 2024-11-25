@@ -92,17 +92,5 @@ transform = A.Compose([
 
 ## 4. Data Statistics
 
-### 4.1. roi-severity task
-
-- Mean : 0.5451
-- Standard Deviation : 0.1577
-
-### 4.2. Synthetized roi-mass-severity task
-
-- Mean : 0.5344
-- Standard Deviation : 0.1731
-
-### 4.2. Synthetized scan-severity task
-
-- Mean : 0.2233
-- Standard Deviation : 0.2723
+- ./data/scan-severity/train - Mean: 0.2095540165901184, Std: 0.2696904242038727
+- ./data/roi-severity/train - Mean: 0.3523887097835541, Std: 0.24902833998203278

@@ -39,7 +39,8 @@ def prepare_roi_severity_row(row, data_dir: str, out_folder: str, img_size: int,
 
 
 def prepare_roi_severity_dataset(data_dir: str, out_dir: str, img_size: int, task: str, roi_type: str = None, patch_padding: int = 200, synthetize: bool = False):
-    shutil.rmtree(os.path.join(out_dir, task), ignore_errors=True)
+    shutil.rmtree(os.path.join(
+        out_dir, task, "_synthetized" if synthetize else ""), ignore_errors=True)
     csv_file_list = glob(data_dir + '/*corrected.csv') if not roi_type else glob(
         data_dir + f'/*{roi_type}*corrected.csv')
     for csv_data_file in csv_file_list:
